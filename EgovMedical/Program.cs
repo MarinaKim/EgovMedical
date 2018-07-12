@@ -9,24 +9,25 @@ using System.Threading.Tasks;
 
 namespace EgovMedical
 {
+    public enum TypeMenu { type1, type2}
     class Program
     {
         static void Main(string[] args)
         {
-            GetAllUsers();
+            ServiseUser.GetAllUsers();
             PrintMenu();
             int choice = Int32.Parse(Console.ReadLine());
             switch (choice)
             {
                 case 1:
                     {
-
+                        Autorisation();
                     }
                     break;
 
                 case 2:
                     {
-                        if(ServiseUser.Registration(GetUserInfoForRegistration()))
+                        if (ServiseUser.Registration(GetUserInfoForRegistration()))
                         {
                             Console.WriteLine("OK");
                         }
@@ -40,9 +41,24 @@ namespace EgovMedical
 
         }
 
-        static public void PrintMenu()
+        static public void PrintMenu(TypeMenu typeMenu=TypeMenu.type1)
+        { switch (typeMenu) {
+                case TypeMenu.type1:
+                    {
+                        Console.WriteLine("1. Enter\n2.Registration");
+                    }break;
+                case TypeMenu.type2:
+                    {
+                        Console.WriteLine("1. Список организаций. ");
+                        Console.WriteLine("2. Добавить организацию. ");
+                    }
+                    break;
+            }
+    }
+
+        static public int getPunctMenu()
         {
-            Console.WriteLine("1. Enter\n2.Registration");
+            return Int32.Parse(Console.ReadLine());
         }
 
         static public User GetUserInfoForRegistration()
@@ -72,17 +88,72 @@ namespace EgovMedical
             return user;
         }
 
-        public static void GetAllUsers()
+        static public void Autorisation()
         {
-            using (var db = new LiteDatabase(@"EgovMedDB.db")) //using для безопасного использования БД, не надо следить за открытием и закрытием
+            User user = new User();
+            int count = 1;
+            do
             {
-                LiteCollection<User> users = db.GetCollection<User>("User");
-                foreach (var item in users.FindAll())
-                {
-                    Console.WriteLine("FIO:{0}\t{1}", item.FIO, item.CreateDate);
+                user = new User();
+                Console.WriteLine("Enter login: ");
+                user.login = Console.ReadLine();
+                Console.WriteLine("Enter password: ");
+                user.password = Console.ReadLine();
 
+                if (ServiseUser.UserIsExist(user.login))
+                {
+                    StatusAutorisation status = ServiseUser.LoginOn(user.login, user.password, out user);
+                    if (status == StatusAutorisation.status02)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("у вас осталось {0} попыток.", 3 - count);
+                        count++;
+                    }
+                    else if (status == StatusAutorisation.status01)
+                    {
+                        Console.Clear();
+                        SetConsoleColor(string.Format("Welcome, {0}", user.FIO), ConsoleColor.Green);
+                        PrintMenu(TypeMenu.type2);
+                        switch (getPunctMenu())
+                        {
+                            case 1:
+                                {
+
+                                }break;
+                            case 2:
+                                {
+
+                                }break;
+                        }
+
+                        break;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        SetConsoleColor("Error authorization.", ConsoleColor.Red);
+                        break;
+                    }
+                }
+                else
+                {
+                    SetConsoleColor(" такого логина не существует.", ConsoleColor.Red);
+                }
+                } while (count <= 3) ;
+
+                if (count > 3)
+                {
+                    ServiseUser.BlockUser(user.login);
+                    Console.Clear();
+                    SetConsoleColor("You blocked. ", ConsoleColor.Red);
                 }
             }
+
+        private static void SetConsoleColor(string message, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }
