@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EgovMedical.Model
 {
+    public enum TypeMenu { type1, type2 }
     class ServiseProgramm
     {
         private static User user;

@@ -1,45 +1,43 @@
 ﻿using Egov.Medical.Lib.Model;
-using EgovMedical.Model;
 using GeneratorName;
-using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EgovMedical.Model;
 
-namespace EgovMedical
+namespace Egov.Medical
 {
-    public enum TypeMenu { type1, type2}
+  
     class Program
     {
         static void Main(string[] args)
         {
             ServiseProgramm.PrintMenu();
 
-            switch(ServiseProgramm.getPunctMenu())
-
-                case 1: {
-                    ServiseProgramm.Autorisation();
-                }
-                break;
-
+            switch (ServiseProgramm.getPunctMenu())
+            {
+                case 1:
+                    {
+                        ServiseProgramm.Autorisation();
+                    }
+                    break;
                 case 2:
                     {
                         if (ServiseUser.Registration(ServiseProgramm.GetUserInfoForRegistration()))
                         {
-                            Console.WriteLine("OK");
+                            Console.Clear();
+                            Console.WriteLine("register ok");
                         }
                         else
                         {
-                            Console.WriteLine("Error");
+                            Console.Clear();
+                            Console.WriteLine("register error");
                         }
                     }
                     break;
             }
-
         }
-
-        
     }
 }
