@@ -52,6 +52,7 @@
     <Compile Include="Model\MedicalOrganization.cs" />
     <Compile Include="Model\Pacient.cs" />
     <Compile Include="Model\ServiseMedOrganization.cs" />
+    <Compile Include="Model\ServisePacient.cs" />
     <Compile Include="Model\ServiseUser.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Egov.Medical.Lib.Model
 {
-    class MedicalOrganization
+   public class MedicalOrganization
     {
         public int MedOrganizationId { get; set; }
         public  string NameOfOrganization { get; set; }

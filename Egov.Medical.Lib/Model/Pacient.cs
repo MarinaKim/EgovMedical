@@ -10,6 +10,7 @@ namespace Egov.Medical.Lib.Model
 {
   public class Pacient : IPacient
     {
+        public int PacientId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string FIO { get; set; }
 
@@ -21,5 +22,8 @@ namespace Egov.Medical.Lib.Model
         {
             return (DateTime.Now.Year - DateOfBirth.Year);
         }
+
+        public int MedOrganizationId { get; set; }
+        public MedicalOrganization MedicalOrganization { get; set; }
     }
 }
