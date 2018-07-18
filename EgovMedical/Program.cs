@@ -9,9 +9,17 @@ using EgovMedical.Model;
 
 namespace Egov.Medical
 {
+
+    
   
     class Program
     {
+        Discount d = Discount.name;
+        //enum
+        Console.WriteLine(Enum.GetUnderlyingType();
+       
+
+
         static void Main(string[] args)
         {
             ServiseProgramm.PrintMenu();
